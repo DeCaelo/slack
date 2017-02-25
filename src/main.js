@@ -15,6 +15,8 @@ import firebase from 'firebase'
   };
   firebase.initializeApp(config);
 
+  window.firebase = firebase
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -65,6 +65,11 @@
     methods: {
       register() {
         console.log('register')
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then( user => {
+          console.log('utilisateur inscrit ' + user.email)
+        }).catch( error => {
+          console.log(err)
+        })
       }
     }
   }
