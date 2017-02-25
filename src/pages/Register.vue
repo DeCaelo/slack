@@ -7,7 +7,7 @@
         Slack
       </div>
     </h2>
-    <form class="ui large form" :class="{ 'error' : hasErrors }">
+    <form class="ui large form">
       <div class="ui stacked segment">
 
         <div class="field">
@@ -38,13 +38,8 @@
           </div>
         </div>
 
-        <div class="ui fluid large orange button" @click.prevent="register" :class="{ 'loading': isLoading }">S'inscrire</div>
+        <div class="ui fluid large orange button" @click.prevent="register">S'inscrire</div>
       </div>
-
-      <div class="ui error message" v-if="hasErrors">
-          <p v-for="error in errors">{{ error }}</p>
-      </div>
-
     </form>
 
     <div class="ui message">
@@ -57,6 +52,23 @@
 
 <script>
 
+  export default {
+    name: 'register',
+    data () {
+      return {
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      }
+    },
+    methods: {
+      register() {
+        console.log('register')
+      }
+    }
+  }
+
 </script>
 
 <style scoped>
@@ -67,4 +79,3 @@
     max-width: 450px;
 }
 </style>
-
