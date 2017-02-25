@@ -59,17 +59,47 @@
         name: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        errors: []
       }
     },
     methods: {
       register() {
-        console.log('register')
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then( user => {
-          console.log('utilisateur inscrit ' + user.email)
-        }).catch( error => {
-          console.log(err)
-        })
+        this.errors = [];
+
+      if(this.isFormValid()){
+          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then( user => {
+            console.log('utilisateur inscrit ' + user.email)
+          }).catch( error => {
+            console.log(err)
+          })
+        }
+      },
+      isEmpty() {
+        if(this.name.length == 0 || this.email.length == 0 || this.password.length == 0 || this.password_confirmation.length == 0){
+          return true;
+          }
+        return false;
+      },
+      passwordValid() {
+        if(this.password.length < 6 || this.password_confirmation.length < 6){
+          return false;
+          }
+        if(this.password !== this.password_confirmation){
+          return false;
+          }
+        return true;
+      },
+      isFormValid(){
+        if(this.isEmpty()){
+          this.errors.push('Veuillez remplir tous les champs')
+          return false;
+          }
+        if(!this.passwordValid()){
+          this.errors.push('Mot de passe incorrect')
+          return false;
+          }
+        return true;
       }
     }
   }
