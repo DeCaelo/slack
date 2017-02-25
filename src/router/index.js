@@ -1,15 +1,24 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import VueRouter from 'vue-router'
+import Login from '@/pages/Login'
+import Register from '@/pages/Register'
+import Tchat from '@/pages/Tchat'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
   routes: [
     {
+      path: '/Login',
+      component: Login
+    },
+    {
+      path: '/Register',
+      component: Register
+    },
+    {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      component: Tchat
     }
   ]
 })

@@ -3,11 +3,23 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import firebase from 'firebase'
+
+// Initialize Firebase
+  let config = {
+    apiKey: "AIzaSyBOU1PhdotTWSNmthZfQssJ8kOo9iP4xt4",
+    authDomain: "slack-a7731.firebaseapp.com",
+    databaseURL: "https://slack-a7731.firebaseio.com",
+    storageBucket: "slack-a7731.appspot.com",
+    messagingSenderId: "1064135351475"
+  };
+  firebase.initializeApp(config);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  router
 })
