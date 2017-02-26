@@ -57,6 +57,8 @@
 
 <script>
 
+  import md5 from 'md5'
+
   export default {
     name: 'register',
     data () {
@@ -65,7 +67,8 @@
         email: '',
         password: '',
         password_confirmation: '',
-        errors: []
+        errors: [],
+        usersRef: firebase.database().ref('users')
       }
     },
     computed: {
@@ -80,11 +83,34 @@
       if(this.isFormValid()){
           firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then( user => {
             console.log('utilisateur inscrit ' + user.email)
+
+          user.updateProfile({
+            displayName: this.name,
+            photoURL: "http://www.gravatar.com/avatar/"+md5(user.email)+"?d=identicon"
+          }).then ( () => {
+            //Enregistrement de l'utilisateur en bdd
+            this.saveUserToUsersRef(user).then( () => {
+            this.$store.dispatch("setUser", user)
+            this.$router.push('/')
+          })
+
+          }, error => {
+            console.log(error)
+            this.errors.push(error.message)
+            this.isLoading = false
+          })
+
           }).catch( error => {
             console.log(error)
             this.errors.push(error.message)
           })
         }
+      },
+      saveUserToUsersRef(user){
+        return this.usersRef.child(user.uid).set({
+          name: user.displayName,
+          avatar: user.photoURL
+        })
       },
       isEmpty() {
         if(this.name.length == 0 || this.email.length == 0 || this.password.length == 0 || this.password_confirmation.length == 0){

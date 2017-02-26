@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import firebase from 'firebase'
+import store from './store'
 
 // Initialize Firebase
   let config = {
@@ -23,5 +24,6 @@ new Vue({
   router,
   template: '<App/>',
   components: { App },
-  router
+  router,
+  store
 })
