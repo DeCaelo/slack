@@ -7,7 +7,7 @@
         Slack
       </div>
     </h2>
-    <form class="ui large form">
+    <form class="ui large form" :class="{ 'error' : hasErrors }">
       <div class="ui stacked segment">
 
         <div class="field">
@@ -40,6 +40,11 @@
 
         <div class="ui fluid large orange button" @click.prevent="register">S'inscrire</div>
       </div>
+
+      <div class="ui error message" v-if="hasErrors">
+          <p v-for="error in errors">{{ error }}</p>
+      </div>
+
     </form>
 
     <div class="ui message">
@@ -63,6 +68,11 @@
         errors: []
       }
     },
+    computed: {
+      hasErrors () {
+        return this.errors.length > 0
+      }
+    },
     methods: {
       register() {
         this.errors = [];
@@ -71,7 +81,8 @@
           firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then( user => {
             console.log('utilisateur inscrit ' + user.email)
           }).catch( error => {
-            console.log(err)
+            console.log(error)
+            this.errors.push(error.message)
           })
         }
       },
