@@ -99,7 +99,7 @@
           }, error => {
             console.log(error)
             this.errors.push(error.message)
-              this.isLoading = false
+            this.isLoading = false
           })
 
           }).catch( error => {
