@@ -5,17 +5,17 @@
       <div class="ui items">
         <div class="item">
           <div class="ui mini image">
-              <img  alt="avatar">
+              <img :src="currentUser.photoURL" alt="avatar">
           </div>
           <div class="middle aligned content">
               <div class="ui container">
                   <div class="ui inverted header">
-                    nom utilisateur
+                    {{ currentUser.displayName }}
                   </div>
               </div>
           </div>
           <div class="extra">
-              <button class="ui circular icon right floated button">
+              <button class="ui circular icon right floated button" @click="logout">
                   <i class="icon sign out"></i>
               </button>
           </div>
@@ -25,9 +25,24 @@
 
 </template>
 
+
+
 <script>
+
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'connected-user',
+    computed: {
+      ...mapGetters(['currentUser'])
+    },
+    methods: {
+      logout () {
+        firebase.auth().signOut()
+        this.$store.dispatch("setUser", null)
+        this.$router.push('/login')
+      }
+    }
   }
 </script>
 
