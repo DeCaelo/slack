@@ -19,11 +19,18 @@ import store from './store'
   window.firebase = firebase
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App },
-  router,
-  store
+// Initialise Firebase setUser
+const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+
+  store.dispatch('setUser', user)
+
+  new Vue({
+    el: '#app',
+    template: '<App/>',
+    components: { App },
+    router,
+    store
+  })
+
+  unsubscribe()
 })

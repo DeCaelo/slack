@@ -18,7 +18,15 @@ export default new VueRouter({
     },
     {
       path: '/',
-      component: Tchat
+      component: Tchat,
+      //empêche rootpath redirige sur login
+      beforeEnter: (to, from, next) => {
+        if(!firebase.auth().currentUser){
+          next('/login')
+        }else{
+          next()
+        }
+      }
     }
   ]
 })
