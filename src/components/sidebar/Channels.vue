@@ -14,14 +14,14 @@
         </div>
 
         <div class="content">
-          <div class="ui inverted form">
+          <div class="ui inverted form" :class="{'error': hasErrors }">
             <div class="field">
               <label for="new_channel">Nom du Channel</label>
                 <input type="text" name="new_channel" v-model="new_channel" id="new_channel">
             </div>
 
-            <div class="ui error message">
-
+            <div class="ui error message" v-if="hasErrors">
+              <p v-for="error in errors">{{ error }}</p>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="ui red basic cancel inverted button">
               <i class="remove icon"></i>Annuler
             </div>
-            <div class="ui green inverted button">
+            <div class="ui green inverted button" @click="addChannel">
               <i class="checkmark icon"></i>Ajouter
             </div>
         </div>
@@ -47,12 +47,30 @@
           return {
             channels: [],
             new_channel: '',
+            channelsRef: firebase.database().ref('channels'),
+            messagesRef: firebase.database().ref('messages'),
             errors: []
+          }
+        },
+        computed : {
+          hasErrors () {
+            return this.errors.length > 0
           }
         },
         methods: {
           openChannelModal () {
             $("#channelModal").modal('show')
+        },
+        addChannel () {
+          this.errors = []
+            let key = this.channelsRef.push().key
+            let newChannel = { id: key, name: this.new_channel }
+            this.channelsRef.child(key).update(newChannel).then( () => {
+            this.new_channel = ''
+            $("#channelModal").modal('hide')
+            }).catch( error => {
+              this.errors.push(error.message)
+          })
         }
       }
     }
